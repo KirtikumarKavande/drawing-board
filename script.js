@@ -1,19 +1,26 @@
 console.log("script attached");
 
 const canvas = document.getElementById("drawingCanvas");
-let activeTool = "pencilButton";
+const ctx = canvas.getContext("2d");
+console.log("ctx", ctx);
+const path = [];
+const redoPath = [];
 
+let activeTool = "pencilButton";
+let drawing = false;
 function setupCanvas() {
-  const react = canvas.getBoundingClientRect();
+  const rect = canvas.getBoundingClientRect();
   const dpi = window.devicePixelRatio;
-  canvas.width = react.width * dpi;
-  canvas.height = react.height * dpi;
+  canvas.width = rect.width * dpi;
+  canvas.height = rect.height * dpi;
   console.log("canvas", canvas);
 }
 
 setupCanvas();
 
 document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("mousedown", downMouse);
+
   const toolbar = document.getElementById("toolbar");
   toolbar.addEventListener("click", (event) => {
     if (activeTool) {
@@ -24,3 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
     clickedTool.classList.add("active");
   });
 });
+function downMouse() {
+  drawing = false;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  path = [];
+  redoPath = [];
+}
