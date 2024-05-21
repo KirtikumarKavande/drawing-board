@@ -44,6 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
         redoPath = [];
         drawPath();
     }
+
+    if (activeTool === "undoButton") {
+      if (path.length > 0) {
+        redoPath.push(path.pop());
+        drawPath();
+      }
+    }
   });
 });
 function upMouse() {
