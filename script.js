@@ -39,15 +39,23 @@ document.addEventListener("DOMContentLoaded", () => {
     activeTool = event.target.id;
     const clickedTool = document.getElementById(event.target.id);
     clickedTool.classList.add("active");
-    if(activeTool==="clearButton"){
-        path = [];
-        redoPath = [];
-        drawPath();
+    if (activeTool === "clearButton") {
+      path = [];
+      redoPath = [];
+      drawPath();
     }
 
     if (activeTool === "undoButton") {
       if (path.length > 0) {
         redoPath.push(path.pop());
+        drawPath();
+      }
+    }
+    console.log("redoPath", redoPath);
+    console.log("path", path);
+    if (activeTool === "redoButton") {
+      if (redoPath.length > 0) {
+        path.push(redoPath.pop());
         drawPath();
       }
     }
@@ -59,7 +67,6 @@ function upMouse() {
   console.log(path);
   drawPath();
 
-  redoPath = [];
 }
 
 function downMouse(event) {
@@ -69,6 +76,7 @@ function downMouse(event) {
     const pos = getMousePosition(event);
     console.log("fun", pos);
     if (pos.x >= 0 && pos.y >= 0) {
+        redoPath = []; // Clear redoPath when starting a new drawing action
       path.push({
         color: activeTool === "erasorButton" ? "white" : activeColor,
         width: activeWidth,
@@ -81,6 +89,7 @@ function downMouse(event) {
       });
     }
   }
+
 }
 
 function moveMouse(event) {
@@ -95,18 +104,18 @@ function moveMouse(event) {
 }
 
 function drawPath() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-    path.forEach((p) => {
-      ctx.strokeStyle = p.color;
-      ctx.lineWidth = p.width;
-      ctx.beginPath();
-      ctx.moveTo(p.position[0].x, p.position[0].y);
-      for (let i = 1; i < p.position.length; i++) {
-        ctx.lineTo(p.position[i].x, p.position[i].y);
-      }
-      ctx.stroke();
-    });
-  }
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+  path.forEach((p) => {
+    ctx.strokeStyle = p.color;
+    ctx.lineWidth = p.width;
+    ctx.beginPath();
+    ctx.moveTo(p.position[0].x, p.position[0].y);
+    for (let i = 1; i < p.position.length; i++) {
+      ctx.lineTo(p.position[i].x, p.position[i].y);
+    }
+    ctx.stroke();
+  });
+}
 function getMousePosition(event) {
   const rect = canvas.getBoundingClientRect();
   const dpi = window.devicePixelRatio;
