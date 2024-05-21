@@ -45,9 +45,9 @@ function upMouse() {
   drawing = false;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   console.log(path);
+  drawPath();
 
-  //   path = [];
-  //   redoPath = [];
+  redoPath = [];
 }
 
 function downMouse(event) {
@@ -77,10 +77,24 @@ function moveMouse(event) {
 
     if (pos.x >= 0 && pos.y >= 0) {
       path[path.length - 1].position.push({ x: pos.x, y: pos.y });
+      drawPath();
     }
   }
 }
 
+function drawPath() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    path.forEach((p) => {
+      ctx.strokeStyle = p.color;
+      ctx.lineWidth = p.width;
+      ctx.beginPath();
+      ctx.moveTo(p.position[0].x, p.position[0].y);
+      for (let i = 1; i < p.position.length; i++) {
+        ctx.lineTo(p.position[i].x, p.position[i].y);
+      }
+      ctx.stroke();
+    });
+  }
 function getMousePosition(event) {
   const rect = canvas.getBoundingClientRect();
   const dpi = window.devicePixelRatio;
