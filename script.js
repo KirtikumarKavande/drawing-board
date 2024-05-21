@@ -39,6 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
     activeTool = event.target.id;
     const clickedTool = document.getElementById(event.target.id);
     clickedTool.classList.add("active");
+    if(activeTool==="clearButton"){
+        path = [];
+        redoPath = [];
+        drawPath();
+    }
   });
 });
 function upMouse() {
