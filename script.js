@@ -44,47 +44,41 @@ document.addEventListener("DOMContentLoaded", () => {
 function upMouse() {
   drawing = false;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  console.log(path)
+  console.log(path);
 
-//   path = [];
-//   redoPath = [];
+  //   path = [];
+  //   redoPath = [];
 }
 
 function downMouse(event) {
-
   if (activeTool === "pencilButton" || activeTool === "erasorButton") {
-    console.log("loggeing")
+    console.log("loggeing");
     drawing = true;
     const pos = getMousePosition(event);
-    console.log("fun",pos)
-    if(pos.x>=0 && pos.y>=0){
-
-        path.push({
-            color: activeTool === "erasorButton" ? "white" : activeColor,
-            width: activeWidth,
-            position: [
-              {
-                x: pos.x,
-                y: pos.y,
-              },
-            ],
-          });
-        }
+    console.log("fun", pos);
+    if (pos.x >= 0 && pos.y >= 0) {
+      path.push({
+        color: activeTool === "erasorButton" ? "white" : activeColor,
+        width: activeWidth,
+        position: [
+          {
+            x: pos.x,
+            y: pos.y,
+          },
+        ],
+      });
     }
-
- 
+  }
 }
 
-function moveMouse(event){
+function moveMouse(event) {
+  if (drawing) {
+    const pos = getMousePosition(event);
 
-    if(drawing){
-const pos=getMousePosition(event)
-
-if(pos.x>=0 && pos.y>=0){
-path[path.length-1].position.push({x:pos.x,y:pos.y})
-}
-
+    if (pos.x >= 0 && pos.y >= 0) {
+      path[path.length - 1].position.push({ x: pos.x, y: pos.y });
     }
+  }
 }
 
 function getMousePosition(event) {
